@@ -11,6 +11,8 @@ export interface HeatMapProps {
   yNumber?: number;
   data: number[];
   color?: ColorProps;
+  //形状
+  shape?: 'rectangle' | 'circle';
 }
 
 export interface OpacityProps {
@@ -78,45 +80,101 @@ export const getOpacityByNumber = (
  */
 //热度图view
 const HeatMap: FC<HeatMapProps> = ({
+  direction = 'vertical',
   yNumber = 8,
   xNumber = 30,
   data = generateRandomArray(xNumber, yNumber, 50),
   color = defaultColorMap,
+  shape = 'rectangle',
 }) => {
   if (!data || data.length === 0) {
     throw Error('请传入正确的数据');
   }
   const dataArr = useMemo(() => {
-    return arrToMatrix(data, xNumber, yNumber);
-  }, [data, xNumber, yNumber]);
+    if (direction === 'vertical') {
+      return arrToMatrix(data, xNumber, yNumber);
+    } else {
+      return arrToMatrix(data, yNumber, xNumber);
+    }
+  }, [data, xNumber, yNumber, direction]);
+
+  const renderMatrix = useMemo(() => {
+    if (direction === 'vertical') {
+      return (
+        <>
+          {dataArr.map((dataItem, xIndex) => {
+            return (
+              <View key={`heatmap-main-${xIndex}`} style={[style.sufBox]}>
+                {dataItem.map((item, yIndex) => {
+                  return (
+                    <View
+                      key={`heatmap-suf-${yIndex}`}
+                      style={[
+                        style.itemBox,
+                        {
+                          backgroundColor: item === 0 ? 'gray' : color.theme,
+                          opacity: getOpacityByNumber(color.opacitys, item),
+                        },
+                      ]}
+                    />
+                  );
+                })}
+              </View>
+            );
+          })}
+        </>
+      );
+    } else {
+      return (
+        <>
+          {dataArr.map((dataItem, xIndex) => {
+            return (
+              <View
+                key={`heatmap-main-${xIndex}`}
+                style={[style.sufBoxHorizontal]}
+              >
+                {dataItem.map((item, yIndex) => {
+                  return (
+                    <View
+                      key={`heatmap-suf-${yIndex}`}
+                      style={[
+                        style.itemBox,
+                        {
+                          backgroundColor: item === 0 ? 'gray' : color.theme,
+                          opacity: getOpacityByNumber(color.opacitys, item),
+                          borderRadius: shape === 'circle' ? 5 : 0,
+                        },
+                      ]}
+                    />
+                  );
+                })}
+              </View>
+            );
+          })}
+        </>
+      );
+    }
+  }, [color, dataArr, direction]);
   return (
     <View
-      style={{
-        ...style.mainBox,
-        width: 11 * dataArr.length,
-        height: 11 * (dataArr[0].length as number),
-      }}
+      style={[
+        direction === 'vertical' ? style.mainBox : style.mainBoxHorizontal,
+        {
+          width:
+            direction === 'vertical'
+              ? 11 * dataArr.length
+              : //@ts-ignore
+                11 * dataArr[0].length,
+
+          height:
+            direction === 'vertical'
+              ? //@ts-ignore
+                11 * (dataArr[0].length as number)
+              : 11 * dataArr.length,
+        },
+      ]}
     >
-      {dataArr.map((dataItem, xIndex) => {
-        return (
-          <View key={`heatmap-main-${xIndex}`} style={[style.sufBox]}>
-            {dataItem.map((item, yIndex) => {
-              return (
-                <View
-                  key={`heatmap-suf-${yIndex}`}
-                  style={[
-                    style.itemBox,
-                    {
-                      backgroundColor: item === 0 ? 'gray' : color.theme,
-                      opacity: getOpacityByNumber(color.opacitys, item),
-                    },
-                  ]}
-                />
-              );
-            })}
-          </View>
-        );
-      })}
+      {renderMatrix}
     </View>
   );
 };
@@ -141,5 +199,17 @@ const style = StyleSheet.create({
     width: 10,
     height: 10,
     backgroundColor: 'red',
+  },
+  mainBoxHorizontal: {
+    display: 'flex',
+    flexDirection: 'column',
+    rowGap: 1,
+    columnGap: 1,
+  },
+  sufBoxHorizontal: {
+    display: 'flex',
+    flexDirection: 'row',
+    rowGap: 1,
+    columnGap: 1,
   },
 });

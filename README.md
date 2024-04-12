@@ -10,21 +10,23 @@ npm install @ncuhomeclub/react-native-heatmap
 
 ## Usage
 
-使用例子
+example
 ![alt text](./markdown/image.png)
 
 ```jsx
+import * as React from 'react';
+
+import { StyleSheet, View } from 'react-native';
 import HeatMap from '@ncuhomeclub/react-native-heatmap';
 
-function App() {
+export default function App() {
   const data = [
-    [1, 23, 0],
-    [2, 10, 65],
-    [20, 50, 43],
+    12, 423, 42, 0, 0, 0, 0, 23, 0, 0, 0, 0, 0, 34, 35, 34, 23, 23, 35, 34, 10,
+    2, 4, 6, 2, 5, 0, 0,
   ];
   return (
     <View style={styles.container}>
-      <HeatMap data={data} xNumber={2} yNumber={3} />
+      <HeatMap data={data} />
     </View>
   );
 }
@@ -42,7 +44,58 @@ const styles = StyleSheet.create({
   },
 });
 ```
+## Custom
+ ### ColorTheme,
+ theme is set to the darkest color, and you can set limit and number to set the color for each quantity
+ ```
+  import type { ColorProps } from '@ncuhomeclub/react-native-heatmap';
 
+  const color:ColorProps = {
+  theme: 'blue',
+  opacitys: [
+      {
+        opacity: 0.2,
+        limit: 5,
+      },
+      {
+        opacity: 0.4,
+        limit: 10,
+      },
+      {
+        opacity: 0.6,
+        limit: 15,
+      },
+      {
+        opacity: 0.8,
+        limit: 20,
+      },
+      {
+        opacity: 1,
+        limit: 25,
+    },
+    ],
+  }
+//...
+  <HeatMap data={data} color={color} />
+ ```
+  ### xNumber & yNumber
+  you can pass xNumber and yNumber for set this chart's width and height
+  ```
+  <HeatMap data={data} color={color} xNumber={30} yNumber={8}/>
+
+  ```
+
+  ### direction 
+  you can set direction to decide the data flow
+  ```
+  <HeatMap data={data} color={color} direction='horizontal' />
+  ```
+
+  ### shape
+  ```
+  //set circle shape
+  <HeatMap data={data} color={color} direction='horizontal' shape='circle'/>
+  ```
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.

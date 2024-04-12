@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "react-native-heatmap": ["./src/index"]
+      "@ncuhomeclub/react-native-heatmap": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
