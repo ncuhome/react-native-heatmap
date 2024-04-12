@@ -1,6 +1,6 @@
 {
   "name": "@ncuhomeclub/react-native-heatmap",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A Components of heatmap for react-native ios and android",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

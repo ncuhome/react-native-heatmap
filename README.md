@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
   //set circle shape
   <HeatMap data={data} color={color} direction='horizontal' shape='circle'/>
   ```
+  ![alt text](./markdown/circle.png)
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.

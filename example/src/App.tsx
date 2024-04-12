@@ -37,7 +37,6 @@ export default function App() {
   return (
     <View style={styles.container}>
       <HeatMap
-        data={data}
         color={color}
         xNumber={30}
         yNumber={8}
