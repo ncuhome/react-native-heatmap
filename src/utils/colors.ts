@@ -8,7 +8,7 @@ interface RGBProps {
 const calculateColor = (color: RGBProps, steps: number): RGBProps[] => {
   const gradientColors: RGBProps[] = [];
   for (let i = 0; i < steps; i++) {
-    const factor = (steps - i) / (steps);
+    const factor = (steps - i) / steps;
     gradientColors.push({
       r: Math.min(255, Math.floor(color.r * factor)),
       g: Math.min(255, Math.floor(color.g * factor)),

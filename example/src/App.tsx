@@ -4,14 +4,10 @@ import { StyleSheet, View } from 'react-native';
 import HeatMap from 'react-native-heatmap';
 
 export default function App() {
-  const data = [
-    [1, 23, 0],
-    [2, 10, 65],
-    [20, 50, 43],
-  ];
+  const data = [12,423,42,0,0,0,0,23]
   return (
     <View style={styles.container}>
-      <HeatMap data={data} xNumber={2} yNumber={3} />
+      <HeatMap data={data}/>
     </View>
   );
 }

@@ -5,7 +5,7 @@ A Components of heatmap for react-native ios and android
 ## Installation
 
 ```sh
-npm install react-native-heatmap
+npm install @ncuhomeclub/react-native-heatmap
 ```
 
 ## Usage
@@ -14,7 +14,7 @@ npm install react-native-heatmap
 ![alt text](./markdown/image.png)
 
 ```jsx
-import HeatMap from 'react-native-heatmap';
+import HeatMap from '@ncuhomeclub/react-native-heatmap';
 
 function App() {
   const data = [

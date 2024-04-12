@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import type { FC } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { generateRandomArray } from '../utils/mockData';
+import { arrToMatrix, generateRandomArray } from '../utils/arr';
 
 export interface HeatMapProps {
   direction?: 'horizontal' | 'vertical';
@@ -9,7 +9,7 @@ export interface HeatMapProps {
   yLabels?: string[];
   xNumber?: number;
   yNumber?: number;
-  data: number[][];
+  data: number[];
   color?: ColorProps;
 }
 
@@ -49,13 +49,16 @@ const defaultColorMap: ColorProps = {
   ],
 };
 
-export const getOpacityByNumber = (opacityOption: OpacityProps[], number: number):number => {
+export const getOpacityByNumber = (
+  opacityOption: OpacityProps[],
+  number: number
+): number => {
   let opacity;
   if (opacityOption.length === 0) {
     return 1;
   }
   if (number <= 0) {
-    return 0;
+    return 0.1;
   }
 
   for (let i = 0; i < opacityOption.length; i++) {
@@ -67,7 +70,7 @@ export const getOpacityByNumber = (opacityOption: OpacityProps[], number: number
       break;
     }
   }
-  return opacity ? opacity : 0.1;
+  return opacity ? opacity : 0.2;
 };
 
 /**
@@ -83,15 +86,18 @@ const HeatMap: FC<HeatMapProps> = ({
   if (!data || data.length === 0) {
     throw Error('请传入正确的数据');
   }
+  const dataArr = useMemo(() => {
+    return arrToMatrix(data, xNumber, yNumber);
+  }, [data, xNumber, yNumber]);
   return (
     <View
       style={{
         ...style.mainBox,
-        width: 11 * data.length,
-        height: 11 * (data[0]?.length as number),
+        width: 11 * dataArr.length,
+        height: 11 * (dataArr[0].length as number),
       }}
     >
-      {data.map((dataItem, xIndex) => {
+      {dataArr.map((dataItem, xIndex) => {
         return (
           <View key={`heatmap-main-${xIndex}`} style={[style.sufBox]}>
             {dataItem.map((item, yIndex) => {
@@ -101,7 +107,7 @@ const HeatMap: FC<HeatMapProps> = ({
                   style={[
                     style.itemBox,
                     {
-                      backgroundColor: color.theme,
+                      backgroundColor: item === 0 ? 'gray' : color.theme,
                       opacity: getOpacityByNumber(color.opacitys, item),
                     },
                   ]}
