@@ -8,7 +8,15 @@ export interface HeatMapProps {
   yLabels?: string[];
   xNumber?: number;
   yNumber?: number;
+  headMockData?: number[][];
 }
+//随机生成0-50的数字
+const headMockData = [
+  [8, 78, 45, 76, 0, 45, 34, 21],
+  [12, 45, 78, 23, 56, 23, 78, 45],
+];
+
+const colorMap = {};
 
 /**
  * @description 默认方向为水平方向
