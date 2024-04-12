@@ -1,5 +1,5 @@
 {
-  "name": "react-native-heatmap",
+  "name": "@ncuhomeclub/react-native-heatmap",
   "version": "0.1.0",
   "description": "A Components of heatmap for react-native ios and android",
   "main": "lib/commonjs/index",
@@ -10,9 +10,6 @@
   "files": [
     "src",
     "lib",
-    "android",
-    "ios",
-    "cpp",
     "*.podspec",
     "!ios/build",
     "!android/build",
@@ -49,6 +46,7 @@
   },
   "homepage": "https://github.com/ncuhome/react-native-heatmap#readme",
   "publishConfig": {
+    "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {

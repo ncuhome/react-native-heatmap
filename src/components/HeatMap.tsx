@@ -1,7 +1,6 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import type { FC } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { renderColors } from '../utils/colors';
 import { generateRandomArray } from '../utils/mockData';
 
 export interface HeatMapProps {
@@ -76,21 +75,20 @@ export const getOpacityByNumber = (opacityOption: OpacityProps[], number: number
  */
 //热度图view
 const HeatMap: FC<HeatMapProps> = ({
-  direction = 'horizontal',
   yNumber = 8,
   xNumber = 30,
   data = generateRandomArray(xNumber, yNumber, 50),
   color = defaultColorMap,
 }) => {
-  const colorMap = useMemo(() => {
-    return renderColors(color.theme);
-  }, [color]);
+  if (!data || data.length === 0) {
+    throw Error('请传入正确的数据');
+  }
   return (
     <View
       style={{
         ...style.mainBox,
         width: 11 * data.length,
-        height: 11 * data[0]?.length,
+        height: 11 * (data[0]?.length as number),
       }}
     >
       {data.map((dataItem, xIndex) => {
