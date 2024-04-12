@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import type { FC } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { renderColors } from '../utils/colors';
+import { generateRandomArray } from '../utils/mockData';
 
 export interface HeatMapProps {
   direction?: 'horizontal' | 'vertical';
@@ -8,15 +10,66 @@ export interface HeatMapProps {
   yLabels?: string[];
   xNumber?: number;
   yNumber?: number;
-  headMockData?: number[][];
+  data: number[][];
+  color?: ColorProps;
 }
-//随机生成0-50的数字
-const headMockData = [
-  [8, 78, 45, 76, 0, 45, 34, 21],
-  [12, 45, 78, 23, 56, 23, 78, 45],
-];
 
-const colorMap = {};
+export interface OpacityProps {
+  opacity: number;
+  limit: number;
+}
+
+export interface ColorProps {
+  theme: string;
+  opacitys: OpacityProps[];
+}
+
+const defaultColorMap: ColorProps = {
+  theme: '#09611F',
+  opacitys: [
+    {
+      opacity: 0.2,
+      limit: 5,
+    },
+    {
+      opacity: 0.4,
+      limit: 10,
+    },
+    {
+      opacity: 0.6,
+      limit: 15,
+    },
+    {
+      opacity: 0.8,
+      limit: 20,
+    },
+    {
+      opacity: 1,
+      limit: 25,
+    },
+  ],
+};
+
+export const getOpacityByNumber = (opacityOption: OpacityProps[], number: number):number => {
+  let opacity;
+  if (opacityOption.length === 0) {
+    return 1;
+  }
+  if (number <= 0) {
+    return 0;
+  }
+
+  for (let i = 0; i < opacityOption.length; i++) {
+    //@ts-ignore
+    if (number > opacityOption[i].limit) {
+      //@ts-ignore
+      opacity = opacityOption[i].opacity;
+    } else {
+      break;
+    }
+  }
+  return opacity ? opacity : 0.1;
+};
 
 /**
  * @description 默认方向为水平方向
@@ -26,21 +79,37 @@ const HeatMap: FC<HeatMapProps> = ({
   direction = 'horizontal',
   yNumber = 8,
   xNumber = 30,
+  data = generateRandomArray(xNumber, yNumber, 50),
+  color = defaultColorMap,
 }) => {
+  const colorMap = useMemo(() => {
+    return renderColors(color.theme);
+  }, [color]);
   return (
     <View
       style={{
         ...style.mainBox,
-        width: 11 * xNumber,
-        height: 11 * yNumber,
+        width: 11 * data.length,
+        height: 11 * data[0]?.length,
       }}
     >
-      {Array.from({ length: xNumber }).map((_, xIndex) => {
+      {data.map((dataItem, xIndex) => {
         return (
-          <View key={`heatmap-main-${xIndex}`} style={style.sufBox}>
-            {Array.from({ length: yNumber }).map((_, yIndex) => (
-              <View key={`heatmap-suf-${yIndex}`} style={style.itemBox} />
-            ))}
+          <View key={`heatmap-main-${xIndex}`} style={[style.sufBox]}>
+            {dataItem.map((item, yIndex) => {
+              return (
+                <View
+                  key={`heatmap-suf-${yIndex}`}
+                  style={[
+                    style.itemBox,
+                    {
+                      backgroundColor: color.theme,
+                      opacity: getOpacityByNumber(color.opacitys, item),
+                    },
+                  ]}
+                />
+              );
+            })}
           </View>
         );
       })}
