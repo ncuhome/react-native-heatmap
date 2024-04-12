@@ -36,8 +36,7 @@
   },
   "keywords": [
     "react-native",
-    "ios",
-    "android"
+    "heatmap"
   ],
   "repository": {
     "type": "git",
@@ -120,7 +119,7 @@
     ],
     "rules": {
       "prettier/prettier": [
-        "error",
+        "warn",
         {
           "quoteProps": "consistent",
           "singleQuote": true,
@@ -128,7 +127,8 @@
           "trailingComma": "es5",
           "useTabs": false
         }
-      ]
+      ],
+      "@typescript-eslint/no-unused-vars": "off"
     }
   },
   "eslintIgnore": [
