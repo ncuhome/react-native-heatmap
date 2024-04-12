@@ -40,14 +40,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Yemomo511/react-native-heatmap.git"
+    "url": "git+https://github.com/ncuhome/react-native-heatmap.git"
   },
   "author": "yemomo <1463645455@qq.com> (https://github.com/Yemomo511)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Yemomo511/react-native-heatmap/issues"
+    "url": "https://github.com/ncuhome/react-native-heatmap/issues"
   },
-  "homepage": "https://github.com/Yemomo511/react-native-heatmap#readme",
+  "homepage": "https://github.com/ncuhome/react-native-heatmap#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
